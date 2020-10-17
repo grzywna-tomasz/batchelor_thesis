@@ -1,0 +1,44 @@
+Pochodzenie skecji w pliku main.elf:
+
+<__vectors> - crattiny.o
+Tablica wektorów zawierająca adresy wyjątków i obsługę przerwań.
+https://www.silabs.com/community/mcu/32-bit/knowledge-base.entry.html/2018/11/11/understand_the_gnua-zyam
+
+<__ctors_end>
+odnosi się do pliku _ctors.o przez libgcc.a
+
+<__do_copy_data>
+odniesienie do pliku _copy_data.o, _popcount_tab.o, _thenan_sf.o  przez libgcc.a
+odniesienie do pliku assert.o przez libc.a
+
+<__do_clear_bss>
+odniesienie do pliku atexit.o, errno.o, malloc.o, strtok_P.o, strtok.o, iob.o, asc_store.o, dst_pointer.o, geo_location.o, system_time.o, tm_store.o, utc_offset.o, przez libc.a
+odniesienie do pliku _clear_bss.o, unwind-dw2-fde.o, unwind-sjlj.o przez libgcc.a
+
+<.do_clear_bss_loop>
+odniesienie do pliku _clear_bss.o przez libgcc.a
+
+<.do_clear_bss_start>
+odniesienie do pliku _clear_bss.o przez libgcc.a
+
+funkcje definiowane przez nas - main.o
+
+<__bad_interrupt> - crattiny.o
+
+<_exit>
+odniesienie do pliku abort.o, exit.o przez libc.a
+odniesienie do pliku _exit.o przez libgcc.a
+
+<__stop_program>
+odniesienie do pliku _exit.o przez libgcc.a
+
+<__data_start>
+Zawartość pokrywa się z zawartością <char_init> - main.o
+
+<int_init> - main.o
+
+<__bss_start>
+odniesienie do pliku _clear_bss.o przez libgcc.a
+
+###########################################
+libattiny2313a.a - biblioteka zawierajaca obsługę pamięci eeprom.

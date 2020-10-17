@@ -1,0 +1,10 @@
+
+init.o:     file format elf32-avr
+
+
+Disassembly of section .init3:
+
+00000000 <my_init>:
+   0:	8f ef       	ldi	r24, 0xFF	; 255
+   2:	88 bb       	out	0x18, r24	; 24
+   4:	87 bb       	out	0x17, r24	; 23
