@@ -10,30 +10,23 @@ SECTIONS
 {
   .text   :
   {
-    *(.init1)
     KEEP (*(.init1))
     *(.text)
-    . = ALIGN(2);
      *(.text.*)
-    . = ALIGN(2);
      _etext = . ;
   }  > text
   .data          :
   {
-     PROVIDE (__data_start = .) ;
-    *(.data)
+     __data_start = . ;
      *(.data*)
-    . = ALIGN(2);
      _edata = . ;
-     PROVIDE (__data_end = .) ;
+     __data_end = . ;
   }  > data AT> text
   .bss  ADDR(.data) + SIZEOF (.data)   : AT (ADDR (.bss))
   {
-     PROVIDE (__bss_start = .) ;
-    *(.bss)
-     *(.bss*)
+     __bss_start = . ;
     *(COMMON)
-     PROVIDE (__bss_end = .) ;
+     __bss_end = . ;
   }  > data
    __data_load_start = LOADADDR(.data);
    __data_load_end = __data_load_start + SIZEOF(.data);

@@ -1,16 +1,17 @@
 #include <avr/io.h>
 
 char char_init = 32;
+volatile unsigned long ul_noinit;
 
 void init(void){
 	DDRB = 0xF;
-	PORTB = 0x4;
+	PORTB = 0x4; 
 	DDRD = 0xFF;
-	PORTD = 0b01000000;
-}
+	PORTD = 0b01000000; 
+} 
 
-void set_led(unsigned char ucLedNr){
-	if(ucLedNr == 0){
+void set_led(unsigned char ucLedNr){ 
+	if(ucLedNr == 0){ 
 		//PORTD = 0b00110000;
 		PORTD = char_init;
 	}
@@ -19,19 +20,21 @@ void set_led(unsigned char ucLedNr){
 	} 
 }
 
-void Delay(unsigned int iDelayValue) {
-	volatile unsigned long ulDelayCounter = 300;
-	for (ulDelayCounter=(unsigned long)iDelayValue*300; ulDelayCounter>0; ulDelayCounter--) {
-	} 
+void Delay(unsigned long ulDelayValue) {
+	volatile unsigned long ulDelayCounter = 0;
+	for (ulDelayCounter= ulDelayValue*300; ulDelayCounter>0; ulDelayCounter--) {
+	}
 }
 
 int main(void){
 	init();
+	ul_noinit = 1000;
 	
 	while(1){
-		Delay(1000);
+		Delay(ul_noinit);
 		set_led(0);
-		Delay(1000);
+		Delay(ul_noinit);
 		set_led(1);
+		ul_noinit = ul_noinit - 10;
 	}
 }
