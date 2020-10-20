@@ -1,0 +1,176 @@
+
+main.elf:     file format elf32-avr
+
+
+Disassembly of section .text:
+
+00000000 <my_init>:
+   0:	11 24       	eor	r1, r1
+   2:	1f be       	out	0x3f, r1	; 63
+   4:	cf ed       	ldi	r28, 0xDF	; 223
+   6:	cd bf       	out	0x3d, r28	; 61
+   8:	42 e6       	ldi	r20, 0x62	; 98
+   a:	50 e0       	ldi	r21, 0x00	; 0
+   c:	20 e6       	ldi	r18, 0x60	; 96
+   e:	30 e0       	ldi	r19, 0x00	; 0
+  10:	84 e2       	ldi	r24, 0x24	; 36
+  12:	91 e0       	ldi	r25, 0x01	; 1
+  14:	e8 2f       	mov	r30, r24
+  16:	f9 2f       	mov	r31, r25
+  18:	a2 2f       	mov	r26, r18
+  1a:	b3 2f       	mov	r27, r19
+  1c:	84 2f       	mov	r24, r20
+  1e:	95 2f       	mov	r25, r21
+  20:	8a 17       	cp	r24, r26
+  22:	9b 07       	cpc	r25, r27
+  24:	29 f0       	breq	.+10     	; 0x30 <load_end>
+
+00000026 <load_loop>:
+  26:	05 90       	lpm	r0, Z+
+  28:	0d 92       	st	X+, r0
+  2a:	8a 17       	cp	r24, r26
+  2c:	9b 07       	cpc	r25, r27
+  2e:	d9 f7       	brne	.-10     	; 0x26 <load_loop>
+
+00000030 <load_end>:
+  30:	22 e6       	ldi	r18, 0x62	; 98
+  32:	30 e0       	ldi	r19, 0x00	; 0
+  34:	82 e6       	ldi	r24, 0x62	; 98
+  36:	90 e0       	ldi	r25, 0x00	; 0
+  38:	a8 2f       	mov	r26, r24
+  3a:	b9 2f       	mov	r27, r25
+  3c:	82 2f       	mov	r24, r18
+  3e:	93 2f       	mov	r25, r19
+  40:	8a 17       	cp	r24, r26
+  42:	9b 07       	cpc	r25, r27
+  44:	21 f0       	breq	.+8      	; 0x4e <bss_end>
+
+00000046 <bss_loop>:
+  46:	1d 92       	st	X+, r1
+  48:	8a 17       	cp	r24, r26
+  4a:	9b 07       	cpc	r25, r27
+  4c:	e1 f7       	brne	.-8      	; 0x46 <bss_loop>
+
+0000004e <bss_end>:
+  4e:	44 c0       	rjmp	.+136    	; 0xd8 <main>
+
+00000050 <init>:
+  50:	8f e0       	ldi	r24, 0x0F	; 15
+  52:	87 bb       	out	0x17, r24	; 23
+  54:	84 e0       	ldi	r24, 0x04	; 4
+  56:	88 bb       	out	0x18, r24	; 24
+  58:	8f ef       	ldi	r24, 0xFF	; 255
+  5a:	81 bb       	out	0x11, r24	; 17
+  5c:	80 e4       	ldi	r24, 0x40	; 64
+  5e:	82 bb       	out	0x12, r24	; 18
+  60:	08 95       	ret
+
+00000062 <set_led>:
+  62:	81 11       	cpse	r24, r1
+  64:	03 c0       	rjmp	.+6      	; 0x6c <set_led+0xa>
+  66:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <__data_start>
+  6a:	01 c0       	rjmp	.+2      	; 0x6e <set_led+0xc>
+  6c:	86 e0       	ldi	r24, 0x06	; 6
+  6e:	82 bb       	out	0x12, r24	; 18
+  70:	08 95       	ret
+
+00000072 <Delay>:
+  72:	cf 93       	push	r28
+  74:	df 93       	push	r29
+  76:	cd b7       	in	r28, 0x3d	; 61
+  78:	dd 27       	eor	r29, r29
+  7a:	c4 50       	subi	r28, 0x04	; 4
+  7c:	cd bf       	out	0x3d, r28	; 61
+  7e:	4c e2       	ldi	r20, 0x2C	; 44
+  80:	51 e0       	ldi	r21, 0x01	; 1
+  82:	60 e0       	ldi	r22, 0x00	; 0
+  84:	70 e0       	ldi	r23, 0x00	; 0
+  86:	49 83       	std	Y+1, r20	; 0x01
+  88:	5a 83       	std	Y+2, r21	; 0x02
+  8a:	6b 83       	std	Y+3, r22	; 0x03
+  8c:	7c 83       	std	Y+4, r23	; 0x04
+  8e:	bc 01       	movw	r22, r24
+  90:	80 e0       	ldi	r24, 0x00	; 0
+  92:	90 e0       	ldi	r25, 0x00	; 0
+  94:	2c e2       	ldi	r18, 0x2C	; 44
+  96:	31 e0       	ldi	r19, 0x01	; 1
+  98:	40 e0       	ldi	r20, 0x00	; 0
+  9a:	50 e0       	ldi	r21, 0x00	; 0
+  9c:	2a d0       	rcall	.+84     	; 0xf2 <__mulsi3>
+  9e:	69 83       	std	Y+1, r22	; 0x01
+  a0:	7a 83       	std	Y+2, r23	; 0x02
+  a2:	8b 83       	std	Y+3, r24	; 0x03
+  a4:	9c 83       	std	Y+4, r25	; 0x04
+  a6:	89 81       	ldd	r24, Y+1	; 0x01
+  a8:	9a 81       	ldd	r25, Y+2	; 0x02
+  aa:	ab 81       	ldd	r26, Y+3	; 0x03
+  ac:	bc 81       	ldd	r27, Y+4	; 0x04
+  ae:	89 2b       	or	r24, r25
+  b0:	8a 2b       	or	r24, r26
+  b2:	8b 2b       	or	r24, r27
+  b4:	61 f0       	breq	.+24     	; 0xce <Delay+0x5c>
+  b6:	89 81       	ldd	r24, Y+1	; 0x01
+  b8:	9a 81       	ldd	r25, Y+2	; 0x02
+  ba:	ab 81       	ldd	r26, Y+3	; 0x03
+  bc:	bc 81       	ldd	r27, Y+4	; 0x04
+  be:	01 97       	sbiw	r24, 0x01	; 1
+  c0:	a1 09       	sbc	r26, r1
+  c2:	b1 09       	sbc	r27, r1
+  c4:	89 83       	std	Y+1, r24	; 0x01
+  c6:	9a 83       	std	Y+2, r25	; 0x02
+  c8:	ab 83       	std	Y+3, r26	; 0x03
+  ca:	bc 83       	std	Y+4, r27	; 0x04
+  cc:	ec cf       	rjmp	.-40     	; 0xa6 <Delay+0x34>
+  ce:	cc 5f       	subi	r28, 0xFC	; 252
+  d0:	cd bf       	out	0x3d, r28	; 61
+  d2:	df 91       	pop	r29
+  d4:	cf 91       	pop	r28
+  d6:	08 95       	ret
+
+000000d8 <main>:
+  d8:	bb df       	rcall	.-138    	; 0x50 <init>
+  da:	c6 e0       	ldi	r28, 0x06	; 6
+  dc:	88 ee       	ldi	r24, 0xE8	; 232
+  de:	93 e0       	ldi	r25, 0x03	; 3
+  e0:	c8 df       	rcall	.-112    	; 0x72 <Delay>
+  e2:	80 91 60 00 	lds	r24, 0x0060	; 0x800060 <__data_start>
+  e6:	82 bb       	out	0x12, r24	; 18
+  e8:	88 ee       	ldi	r24, 0xE8	; 232
+  ea:	93 e0       	ldi	r25, 0x03	; 3
+  ec:	c2 df       	rcall	.-124    	; 0x72 <Delay>
+  ee:	c2 bb       	out	0x12, r28	; 18
+  f0:	f5 cf       	rjmp	.-22     	; 0xdc <main+0x4>
+
+000000f2 <__mulsi3>:
+  f2:	ee 27       	eor	r30, r30
+  f4:	ff 27       	eor	r31, r31
+
+000000f6 <__mulsi3_helper>:
+  f6:	aa 27       	eor	r26, r26
+  f8:	bb 27       	eor	r27, r27
+  fa:	08 c0       	rjmp	.+16     	; 0x10c <__mulsi3_helper+0x16>
+  fc:	a2 0f       	add	r26, r18
+  fe:	b3 1f       	adc	r27, r19
+ 100:	e4 1f       	adc	r30, r20
+ 102:	f5 1f       	adc	r31, r21
+ 104:	22 0f       	add	r18, r18
+ 106:	33 1f       	adc	r19, r19
+ 108:	44 1f       	adc	r20, r20
+ 10a:	55 1f       	adc	r21, r21
+ 10c:	96 95       	lsr	r25
+ 10e:	87 95       	ror	r24
+ 110:	77 95       	ror	r23
+ 112:	67 95       	ror	r22
+ 114:	98 f3       	brcs	.-26     	; 0xfc <__mulsi3_helper+0x6>
+ 116:	70 40       	sbci	r23, 0x00	; 0
+ 118:	a9 f7       	brne	.-22     	; 0x104 <__mulsi3_helper+0xe>
+ 11a:	00 97       	sbiw	r24, 0x00	; 0
+ 11c:	99 f7       	brne	.-26     	; 0x104 <__mulsi3_helper+0xe>
+ 11e:	bd 01       	movw	r22, r26
+ 120:	cf 01       	movw	r24, r30
+ 122:	08 95       	ret
+
+Disassembly of section .data:
+
+00800060 <__data_start>:
+  800060:	20 00       	.word	0x0020	; ????

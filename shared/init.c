@@ -2,9 +2,10 @@
 
 extern uint8_t _etext;
 extern uint8_t __data_start;
-extern uint8_t __data_end;
+extern uint8_t __data_end; 
 extern uint8_t __bss_start;
 extern uint8_t __bss_end;
+extern int main(void); 
 
 void my_init (void) __attribute__ ((naked)) __attribute__ ((section (".init1")));
 
@@ -17,7 +18,7 @@ void my_init (void) {
 	"out	0x3d, r28"	"\n\t"
 	);
 	
-	// compare _etext and __data_start
+	// load .data (RAM) from flash 
 	asm volatile(
 	"mov	r30, %A0"	"\n\t"
 	"mov	r31, %B0"	"\n\t"
@@ -25,8 +26,9 @@ void my_init (void) {
 	"mov	r27, %B1"	"\n\t"
 	"mov	r24, %A2"	"\n\t"
 	"mov	r25, %B2"	"\n\t"
-	"cp		r30, r26"	"\n\t"
-	"cpc	r31, r27"	"\n\t"
+	
+	"cp		r24, r26"	"\n\t"
+	"cpc	r25, r27"	"\n\t"
 	"breq	load_end"	"\n\t"
 	
 	"load_loop:"		"\n\t" 
@@ -46,6 +48,7 @@ void my_init (void) {
 	"mov	r27, %B0"	"\n\t"
 	"mov	r24, %A1"	"\n\t"
 	"mov	r25, %B1"	"\n\t"
+	
 	"cp		r24, r26"	"\n\t"
 	"cpc	r25, r27"	"\n\t"
 	"breq	bss_end"	"\n\t"
@@ -56,6 +59,7 @@ void my_init (void) {
 	"cpc	r25, r27"	"\n\t"
 	"brne	bss_loop"	"\n\t"
 	"bss_end:"			"\n\t"
+	"rjmp main"
 	:
 	: "r" (&__bss_start), "r" (&__bss_end)
 	);
