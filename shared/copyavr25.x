@@ -3,8 +3,8 @@ OUTPUT_FORMAT("elf32-avr","elf32-avr","elf32-avr")
 OUTPUT_ARCH(avr:25)
 MEMORY
 {
-  text   (rx)   : ORIGIN = 0, LENGTH = 8K
-  data   (rw!x) : ORIGIN = 0x800060, LENGTH = 0xffa0
+  ROM   (rx)   : ORIGIN = 0, LENGTH = 8K
+  RAM   (rw!x) : ORIGIN = 0x800060, LENGTH = 0xffa0
 }
 SECTIONS
 {
@@ -14,20 +14,20 @@ SECTIONS
     *(.text)
      *(.text.*)
      _etext = . ;
-  }  > text
+  }  > ROM
   .data          :
   {
      __data_start = . ;
      *(.data*)
      _edata = . ;
      __data_end = . ;
-  }  > data AT> text
+  }  > RAM AT> ROM
   .bss  ADDR(.data) + SIZEOF (.data)   : AT (ADDR (.bss))
   {
      __bss_start = . ;
     *(COMMON)
      __bss_end = . ;
-  }  > data
+  }  > RAM
    __data_load_start = LOADADDR(.data);
    __data_load_end = __data_load_start + SIZEOF(.data);
 }
