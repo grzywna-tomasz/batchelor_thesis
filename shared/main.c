@@ -21,20 +21,20 @@ void set_led(unsigned char ucLedNr){
 }
 
 void Delay(unsigned long ulDelayValue) {
-	volatile unsigned long ulDelayCounter = 0;
-	for (ulDelayCounter= ulDelayValue*300; ulDelayCounter>0; ulDelayCounter--) {
+	volatile unsigned long ulDelayCounter;
+	for (ulDelayCounter= ulDelayValue; ulDelayCounter>0; ulDelayCounter--) {
 	}
 }
 
 int main(void){
 	init();
-	ul_noinit = 1000;
+	ul_noinit = 300000;
 	
 	while(1){
 		Delay(ul_noinit);
 		set_led(0);
 		Delay(ul_noinit);
 		set_led(1);
-		ul_noinit = ul_noinit - 10;
+		ul_noinit = ul_noinit - 3000;
 	}
 }
