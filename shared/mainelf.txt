@@ -9,6 +9,8 @@ Disassembly of section .text:
    2:	1f be       	out	0x3f, r1	; 63
    4:	cf ed       	ldi	r28, 0xDF	; 223
    6:	cd bf       	out	0x3d, r28	; 61
+
+00000008 <copy_data>:
    8:	41 e6       	ldi	r20, 0x61	; 97
    a:	50 e0       	ldi	r21, 0x00	; 0
    c:	20 e6       	ldi	r18, 0x60	; 96
@@ -23,16 +25,16 @@ Disassembly of section .text:
   1e:	95 2f       	mov	r25, r21
   20:	8a 17       	cp	r24, r26
   22:	9b 07       	cpc	r25, r27
-  24:	29 f0       	breq	.+10     	; 0x30 <load_end>
+  24:	29 f0       	breq	.+10     	; 0x30 <bss_clear>
 
-00000026 <load_loop>:
+00000026 <data_load_loop>:
   26:	05 90       	lpm	r0, Z+
   28:	0d 92       	st	X+, r0
   2a:	8a 17       	cp	r24, r26
   2c:	9b 07       	cpc	r25, r27
-  2e:	d9 f7       	brne	.-10     	; 0x26 <load_loop>
+  2e:	d9 f7       	brne	.-10     	; 0x26 <data_load_loop>
 
-00000030 <load_end>:
+00000030 <bss_clear>:
   30:	25 e6       	ldi	r18, 0x65	; 101
   32:	30 e0       	ldi	r19, 0x00	; 0
   34:	81 e6       	ldi	r24, 0x61	; 97
@@ -43,15 +45,15 @@ Disassembly of section .text:
   3e:	93 2f       	mov	r25, r19
   40:	8a 17       	cp	r24, r26
   42:	9b 07       	cpc	r25, r27
-  44:	21 f0       	breq	.+8      	; 0x4e <bss_end>
+  44:	21 f0       	breq	.+8      	; 0x4e <Call_main>
 
-00000046 <bss_loop>:
+00000046 <bss_clear_loop>:
   46:	1d 92       	st	X+, r1
   48:	8a 17       	cp	r24, r26
   4a:	9b 07       	cpc	r25, r27
-  4c:	e1 f7       	brne	.-8      	; 0x46 <bss_loop>
+  4c:	e1 f7       	brne	.-8      	; 0x46 <bss_clear_loop>
 
-0000004e <bss_end>:
+0000004e <Call_main>:
   4e:	34 c0       	rjmp	.+104    	; 0xb8 <main>
 
 00000050 <init>:

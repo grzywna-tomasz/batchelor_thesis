@@ -12,11 +12,17 @@ void my_init (void) __attribute__ ((naked)) __attribute__ ((section (".init1")))
 void my_init (void) {
 	// clear __zero_reg__, load SP
 	asm volatile(
+	"Set_SP__clear_zer_reg:" "\n\t"
 	"clr	r1" "\n\t"
 	"out	0x3f, r1"	"\n\t"
 	"ldi	r28, 0xDF"	"\n\t"
 	"out	0x3d, r28"	"\n\t"
 	);
+	
+	
+	// Label to keep track in output file
+	asm volatile("copy_data:");
+	
 	
 	// load .data (RAM) from flash 
 	asm volatile(
@@ -30,18 +36,22 @@ void my_init (void) {
 	// Compare __data_start __data_end (in case of no data)
 	"cp		r24, r26"	"\n\t"
 	"cpc	r25, r27"	"\n\t"
-	"breq	load_end"	"\n\t"
+	"breq	bss_clear"	"\n\t"
 	// Load .data from flash to RAM
-	"load_loop:"		"\n\t" 
+	"data_load_loop:"	"\n\t" 
 	"lpm	r0, z+"		"\n\t"
 	"st		x+, r0"		"\n\t"
 	"cp		r24, r26"	"\n\t"
 	"cpc	r25, r27"	"\n\t"
-	"brne	load_loop"	"\n\t"
-	"load_end:"			"\n\t"
+	"brne	data_load_loop"	"\n\t"
 	:
 	: "r" (&_etext), "r" (&__data_start), "r" (&__data_end)
 	);
+	
+	
+	// Label to keep track in output file
+	asm volatile("bss_clear:");
+	
 	
 	// Clean RAM for uninitialized data (bss)
 	asm volatile(
@@ -53,15 +63,16 @@ void my_init (void) {
 	// Compare __bss_start __bss_end (in case of no bss data)
 	"cp		r24, r26"	"\n\t"
 	"cpc	r25, r27"	"\n\t"
-	"breq	bss_end"	"\n\t"
+	"breq	Call_main"	"\n\t"
 	// Load "0" into RAM for lengh: __bss_end - __bss_start
-	"bss_loop:"			"\n\t"
+	"bss_clear_loop:"	"\n\t"
 	"st		x+, r1"		"\n\t"
 	"cp		r24, r26"	"\n\t"
 	"cpc	r25, r27"	"\n\t"
-	"brne	bss_loop"	"\n\t"
-	"bss_end:"			"\n\t"
+	"brne	bss_clear_loop"	"\n\t"
+	
 	// Last init instruction - jump to main
+	"Call_main:"			"\n\t"
 	"rjmp main"
 	:
 	: "r" (&__bss_start), "r" (&__bss_end)
