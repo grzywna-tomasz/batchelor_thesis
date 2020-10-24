@@ -10,7 +10,7 @@ SECTIONS
 {
   .text   :
   {
-    KEEP (*(.init1))
+    KEEP (*(.init))
     *(.text)
      *(.text.*)
      _etext = . ;
